@@ -1,23 +1,24 @@
 @font-face{
-    font-family: 'SloopScript';
-    src: url(fonts/Sloop-ScriptThree.ttf);
+    font-family: 'Horizon';
+    src: url(fonts/Horizon.otf);
 }
 
 @font-face {
-    font-family: 'Mirage';
-    src: url(fonts/Mirage.otf);
+    font-family: 'Helvetica';
+    src: url(fonts/helvetica-world-bold.ttf);
 }
 
 body{
-    background: #394965;
+    background: linear-gradient(to bottom right, #616060 20%, #dcd9d9 80%);
     margin: 0;
+    height: 100vh;
 }
 
 p {
-    font-family: 'SloopScript';
+    font-family: 'Horizon';
     font-size: 3.5vw;
     text-align: center;
-    color: #e7e0c2;
+    color: #ffffff;
 }
 
 
@@ -27,30 +28,56 @@ p {
 }
 
 .stripe1{
-    background-color: #0f141c56;
+    background-color: #0f141c00;
     display: flex;
     flex: 1 1 1vw;
-    height: 8.4vw;
+    height: 10.4vw;
     justify-content: left;
     align-items: center;
+    
 }
 
 
 .title{
-    color: #e7e0c2;
-    font-family: 'SloopScript';
-    font-size: 8vw;
+    color: #ffffff;
+    font-family: 'Horizon';
+    font-size: 5vw;
     font-weight: 20;
-    text-shadow: -7px 1px 0px #394965;
-    padding-left: 30vw;
+    padding-left: 5vw;
+    padding-right: 42vw;
+
+    /* glow effect */
+    text-shadow: 
+        0 0 3.5px #fff,         
+        0 0 0px #fff,            
+        0 0 20px #b3b3b3,        
+        0 0 10px #b3b3b3;
 }
 
 .logo{
-    font-size: 8vw;
-    padding-left: 4vw;
+    font-size: 4vw;
+    font-weight: 3;
+    padding-left: 3vw;
     outline: none;
     border: none;
     text-decoration: none;
+
+    text-shadow: 
+        0 0 3.5px #fff,         
+        0 0 0px #fff,            
+        0 0 20px #b3b3b3,        
+        0 0 10px #b3b3b3;
+}
+
+.motto {
+    font-family: 'Helvetica';
+    font-size: 2vw;
+    text-align: left;
+    color: #ffffff;
+    text-shadow: 0 0 5px #fff;
+    padding-left: 26vw;
+    margin-top: -3vw;
+
 }
 
 a {
@@ -73,46 +100,63 @@ a:focus, a:active{
 }
 
 .form-container{
-    width: 55%;
+    width: 65vw;
 }
 
 .text-by p{
-    height: 2.3vw;
-    margin-top: 1vw;
+    height: 2vw;
+    font-size: 3vw;
+    margin-top: 1.5vw;
 }
 
 .input-boxes{
     display: flex;
     align-items: center;
+    flex: 1 1 100px;
     flex-direction: column;
     margin-right: 40px;
     margin-left: -30px;
     margin-top: 6vw;
-    flex: 1 1 100px;
     margin-bottom: 7vw;
 }
 
+.input-boxes-wrapper {
+    background-color: rgba(74, 74, 74, 0.212); 
+    padding: 2vw;                         
+    border-radius: 2vw;                    
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.225);
+    width: 35vw;   
+    height: 20vw;                         
+    margin-bottom: -1.5vw;   
+    margin-top: 4vw;   
+    align-items: center;              
+    justify-content: center;
+    display: flex;
+    padding-left: 11vw;
+}
+
 .input-boxes input {
-    width: 90%;
-    height: 6vw;
-    font-family: 'Mirage';
-    font-size: 4vw;
+    width: 40vw;
+    height: 5.5vw;
+    font-family: 'Helvetica';
+    font-size: 2vw;
     text-align: center;
-    color: #e7e0c2;
+    color: #ffffff;
     border-style: solid;
     border-width: 0px;
-    background-color: #0f141c20;
-    font-weight: 20;
+    background-color: #1d1f2220;
+    font-weight: 20vw;
     transition: 0.2s ease;
     border-radius: 1vw;
 }
 
 input::placeholder{
-    font-size: 3.5vw;
+    font-size: 2vw;
     text-align: center;
-    color:#e7e0c2;
+    color:#ffffff;
     font-weight: 20;
     transition: 0.2s ease;
+    text-shadow: 0 0 5px #fff;
 }
 
 input:focus::placeholder{
@@ -123,36 +167,34 @@ input:focus::placeholder{
 
 
 .form-container button {
-    font-family: 'SloopScript';
-    font-size: 6vw;
+    font-family: 'Horizon';
+    font-size: 2vw;
     text-align: center;
-    color: #e7e0c2;
-    background-color: #394965;
-    border-color: #394965;
+    color: #ffffff;
+    background-color: #39496500;
+    border-color: #39496500;
     border-style: solid;
     font-weight: 20;
-    text-shadow: -7px 1px 0px #394965c3;
-    margin-top: -2vw;
-    margin-left: -12vw;
+    margin-top: 0.5vw;
+    margin-left: 11vw;
     transition: 0.1s ease;
 }
 
 button:hover {
     cursor: pointer;
-    font-size: 6.05vw;
+    font-size: 2.05vw;
     transition: 0.1s ease;
-    text-shadow: -7px 1px 0px #51678dcc;
 }
 
 #mic {
     margin-top: 0vw;
     margin-left: 0px;
-    width: 80%;
+    width: 30vw;
 }
 
 .image {
     display: flex;
-    width: 47%;
+    width: 50vw;
     align-items: center;
 }
 

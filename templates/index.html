@@ -1,20 +1,38 @@
-{% extends "base.html" %}
- {% block content %}
- <div class="content">
-    <div class="image">
-        <img src="static/images/tunetwinpic.jpg" id="mic">
-    </div>
-    <div class="form-container">
-        <form class='form' method="POST" action="/find-twin">
-            <div class="input-boxes">
-                <input type="text" name="song" placeholder="Enter the song name" required/>
-                <div class="text-by">
-                    <p>by</p>
-                </div> 
-                <input type="text" name="artist" placeholder="Enter the artist name" required/>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>TuneTwin</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
+    </head>
+    <body>
+        <div class='header'>
+            <div class="stripe1">
+                <h1 class="title">TuneTwin</h1>
+                <a href="/">
+                    <p class="logo">♫</p>
+                </a>
             </div>
-            <button type="submit">Find your tune's twin</button>
-        </form>
-    </div>
-</div>
- {% endblock %}
+            <p class="motto">FEEL THE TUNE, FIND YOUR MATCH.</p>
+        </div>
+        <div class="content">
+            <div class="image">
+                <img src="static/images/tunetwinpic.jpg" id="mic">
+            </div>
+            <div class="form-container">
+                <form class='form' method="POST" action="/find-twin">
+                    <div class="input-boxes-wrapper"> <!-- New wrapper for the dark background -->
+                        <div class="input-boxes">
+                            <input type="text" name="song" placeholder="ENTER THE SONG NAME" required />
+                            <div class="text-by">
+                                <p>BY</p>
+                            </div>
+                            <input type="text" name="artist" placeholder="ENTER THE ARTIST NAME" required />
+                        </div>
+                    </div>
+                    <button type="submit">Find your twin</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
