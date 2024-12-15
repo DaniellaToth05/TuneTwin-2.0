@@ -29,3 +29,7 @@
 - **Dotenv** – For managing environment variables.
 
 ---
+
+![Home Sample](static/images/home-sample.png)
+![Your Tune Sample](static/images/yourtune-sample.png)
+![Results Sample](static/images/results-sample.png)
