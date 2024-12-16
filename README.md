@@ -2,7 +2,7 @@
 
 **TuneTwin** is a music recommendation tool that uses the Spotify API to help you discover new music. Just enter your favorite song, and TuneTwin will find tracks with a similar vibe. Whether you want to expand your playlists or explore new artists, TuneTwin makes music discovery easy and personalized!
 
-## 🚀 Features
+## Features
 
 - **Song-Based Recommendations**: Enter a favorite song, and TuneTwin finds similar tracks using the Spotify API.
 - **Personalized Discovery**: Explore music tailored to your tastes.
@@ -12,7 +12,7 @@
 
 ---
 
-## 📚 How It Works
+## How It Works
 
 1. **Input**: Enter your favorite song.
 2. **API Call**: TuneTwin uses the Spotify API to find similar songs.
@@ -20,7 +20,7 @@
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Python** (Flask) – For the web server.
 - **Spotify API** – For fetching song recommendations.
