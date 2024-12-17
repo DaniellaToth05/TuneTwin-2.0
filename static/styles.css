@@ -27,24 +27,24 @@ p {
     flex-direction: column;
 }
 
+
 .stripe1{
     background-color: #0f141c00;
     display: flex;
     flex: 1 1 1vw;
-    height: 10.4vw;
+    height: 9.4vw;
     justify-content: left;
     align-items: center;
     
 }
 
-
 .title{
     color: #ffffff;
     font-family: 'Horizon';
-    font-size: 5vw;
+    font-size: 4vw;
     font-weight: 20;
     padding-left: 5vw;
-    padding-right: 42vw;
+    padding-right: 50vw;
 
     /* glow effect */
     text-shadow: 
@@ -55,7 +55,7 @@ p {
 }
 
 .logo{
-    font-size: 4vw;
+    font-size: 3vw;
     font-weight: 3;
     padding-left: 3vw;
     outline: none;
@@ -71,13 +71,54 @@ p {
 
 .motto {
     font-family: 'Helvetica';
-    font-size: 2vw;
+    font-size: 1.5vw;
     text-align: left;
     color: #ffffff;
     text-shadow: 0 0 5px #fff;
     padding-left: 26vw;
     margin-top: -3vw;
 
+}
+
+
+.header2 {
+    width: 100%;
+    padding: 1vw 2vw;
+}
+
+.stripe2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.motto2 {
+    font-family: 'Helvetica', sans-serif;
+    font-size: 1.5vw;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 0 0 10px #ffffff;
+    margin: 0;
+}
+
+.title2 {
+    font-family: 'Horizon', sans-serif;
+    font-size: 4vw;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 0 0 10px #ffffff;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.logo2 {
+    font-family: 'Horizon', sans-serif;
+    font-size: 3vw;
+    color: #ffffff;
+    text-shadow: 0 0 10px #ffffff;
+    margin: 0;
+    cursor: pointer;
 }
 
 a {
@@ -114,11 +155,25 @@ a:focus, a:active{
     align-items: center;
     flex: 1 1 100px;
     flex-direction: column;
-    margin-right: 40px;
-    margin-left: -30px;
+    margin-right: 3.5vw;
+    margin-left: -5.5vw;
     margin-top: 6vw;
     margin-bottom: 7vw;
 }
+
+.input-boxes input:-webkit-autofill,
+.input-boxes input:-webkit-autofill:hover,
+.input-boxes input:-webkit-autofill:focus,
+.input-boxes input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #848484 inset !important; 
+    -webkit-text-fill-color: #ffffff !important; 
+    background-color: #6b6a6a !important; 
+    background-clip: padding-box !important;
+    border: none !important; 
+    outline: none !important;
+    transition: background-color 0.2s ease-in-out;
+}
+
 
 .input-boxes-wrapper {
     background-color: rgba(74, 74, 74, 0.212); 
@@ -148,6 +203,8 @@ a:focus, a:active{
     font-weight: 20vw;
     transition: 0.2s ease;
     border-radius: 1vw;
+    text-transform: uppercase;
+    text-shadow: 0 0 5px #fff;
 }
 
 input::placeholder{

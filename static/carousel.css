@@ -34,7 +34,7 @@
     justify-content: center;
     border-width: 0.3vw; 
     border-style: solid;
-    border-color: #e7e0c2;
+    border-color: #ffffff;
     width: 1vw; 
     height: 1vw; 
 }
@@ -104,7 +104,7 @@
 .carousel-controls button {
     background: none;
     border: none;
-    color: #e7e0c2;
+    color: #ffffff;
     font-size: 2vw; 
     cursor: pointer;
     margin: 0 2vw; 
@@ -120,7 +120,7 @@
 
 
 .track-info {
-    font-family: 'Mirage';
+    font-family: 'Helvetica';
     position: absolute;
     margin-top: 2vw;
     left: 0;
@@ -129,10 +129,10 @@
 }
 
 .track-info p {
-    font-family: 'Mirage';
+    font-family: 'Helvetica';
     left: 0;
     right: 0;
-    color: #e7e0c2;
+    color: #ffffff;
     font-size: 0vw;
     margin-top: -0.2vw;
     text-align: center;
@@ -190,17 +190,19 @@
 }
 
 .tune-phrase-top{
-    font-family: 'Mirage';
-    color: #e7e0c2;
-    font-size: 3.5vw;
+    font-family: 'Horizon';
+    color: #ffffff;
+    font-size: 2vw;
+    text-shadow: 0 0 5px #fff;
     font-weight: thin;
 }
 .tune-phrase-bottom{
-    font-family: 'Mirage';
-    color: #e7e0c2;
-    font-size: 3.5vw;
+    font-family: 'Horizon';
+    color: #ffffff;
+    font-size: 2vw;
     font-weight: thin;
     margin-top: -0.5vw;
+    text-shadow: 0 0 5px #fff;
 }
 
 .song-info {
@@ -213,24 +215,45 @@
     width: 20vw; 
     height: 20vw; 
     object-fit: cover;
-    margin-top: -1.8vw;
+    margin-top: -10vw;
     border-width: 0.3vw; 
     border-style: solid;
-    border-color: #e7e0c2;
+    text-shadow: 0 0 5px #fff;
+    border-color: #ffffff;
 }
 
 .song-title {
-    font-family: 'Mirage';
-    font-size: 2vw;
+    font-family: 'Horizon';
+    font-size: 1.5vw;
     font-weight: thin;
-    color: #e7e0c2;
+    color: #ffffff;
+    text-shadow: 0 0 5px #fff;
     margin-top: 11px;
 }
 
 .song-artist {
-    font-family: 'SloopScript';
-    font-size: 3vw;
-    color: #e7e0c2; 
+    font-family: 'Helvetica';
+    text-transform: uppercase;
+    font-size: 1.5vw;
+    color: #ffffff; 
     margin-top: -1vw;
+    text-shadow: 0 0 5px #fff;
 }
+
+.song-display {
+    background-color: rgba(91, 91, 91, 0.212);
+    padding: 2vw;
+    border-radius: 2vw;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.225);
+    width: 47vw;
+    height: 37vw;
+    margin: 4vw auto; /* Center the element horizontally */
+    
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center;    /* Center items horizontally */
+    justify-content: center;/* Center items vertically */
+    gap: 1.5vw;             /* Add space between stacked elements */
+}
+
 

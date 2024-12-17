@@ -3,7 +3,7 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='carousel.css') }}">
 <div class="song-display">
-    <p class="tune-phrase-top">Your tune:<p>
+    <p class="tune-phrase-top">Your tune</p>
     {% if song_name and song_artist and song_cover_url %}
         <div class="song-info">
             <img src="{{ song_cover_url }}" alt="{{ song_name }}" class="song-cover">
