@@ -195,6 +195,7 @@
     font-size: 2vw;
     text-shadow: 0 0 5px #fff;
     font-weight: thin;
+    margin-top: -0.3vw;
 }
 .tune-phrase-bottom{
     font-family: 'Horizon';
@@ -215,11 +216,11 @@
     width: 20vw; 
     height: 20vw; 
     object-fit: cover;
-    margin-top: -10vw;
+    margin-top: -2vw;
     border-width: 0.3vw; 
     border-style: solid;
-    text-shadow: 0 0 5px #fff;
-    border-color: #ffffff;
+    box-shadow: 0 0 20px #fff;
+    border-color: #ffffffa2;
 }
 
 .song-title {
@@ -247,13 +248,13 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.225);
     width: 47vw;
     height: 37vw;
-    margin: 4vw auto; /* Center the element horizontally */
+    margin: 4vw auto;
     
     display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    align-items: center;    /* Center items horizontally */
-    justify-content: center;/* Center items vertically */
-    gap: 1.5vw;             /* Add space between stacked elements */
+    flex-direction: column; 
+    align-items: center;   
+    justify-content: center;
+    gap: 1.5vw;           
 }
 
 

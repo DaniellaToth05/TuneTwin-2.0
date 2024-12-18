@@ -8,11 +8,16 @@
     src: url(fonts/helvetica-world-bold.ttf);
 }
 
-body{
-    background: linear-gradient(to bottom right, #616060 20%, #dcd9d9 80%);
+html, body {
     margin: 0;
-    height: 100vh;
+    padding: 0;
+    min-height: 100%; /* Ensure they cover the full height */
+    background: linear-gradient(to bottom right, #616060 20%, #dcd9d9 80%);
+    background-repeat: no-repeat; /* Prevent background from repeating */
+    background-attachment: fixed; /* Ensure the background stays fixed during scrolling */
 }
+
+
 
 p {
     font-family: 'Horizon';
@@ -88,33 +93,35 @@ p {
 
 .stripe2 {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     width: 100%;
 }
 
 .motto2 {
     font-family: 'Helvetica', sans-serif;
-    font-size: 1.5vw;
+    font-size: 1.3vw;
     color: #ffffff;
     font-weight: bold;
     text-shadow: 0 0 10px #ffffff;
     margin: 0;
+    margin-left: 1vw;
+    margin-right: 13vw;
 }
 
 .title2 {
     font-family: 'Horizon', sans-serif;
-    font-size: 4vw;
+    font-size: 2.5vw;
     color: #ffffff;
     font-weight: bold;
     text-shadow: 0 0 10px #ffffff;
     margin: 0;
     text-transform: uppercase;
+    margin-right: 35.5vw;
 }
 
 .logo2 {
     font-family: 'Horizon', sans-serif;
-    font-size: 3vw;
+    font-size: 2.5vw;
     color: #ffffff;
     text-shadow: 0 0 10px #ffffff;
     margin: 0;
