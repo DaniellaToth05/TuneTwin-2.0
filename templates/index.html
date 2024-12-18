@@ -16,8 +16,15 @@
             <p class="motto">FEEL THE TUNE, FIND YOUR MATCH.</p>
         </div>
         <div class="content">
-            <div class="image">
-                <img src="static/images/tunetwinpic.jpg" id="mic">
+            <div class="album-stack">
+                <img src="{{ url_for('static', filename='images/vinyl.png') }}" class="vinyl-record">
+                <div class="album-covers">
+                    <img src="{{ url_for('static', filename='images/album1.jpeg') }}" class="album-cover cover1">
+                    <img src="{{ url_for('static', filename='images/album2.jpeg') }}" class="album-cover cover2">
+                    <img src="{{ url_for('static', filename='images/album3.jpeg') }}" class="album-cover cover3">
+                    <img src="{{ url_for('static', filename='images/album4.jpeg') }}" class="album-cover cover4">
+                    <img src="{{ url_for('static', filename='images/album5.jpeg') }}" class="album-cover cover5">
+                </div>
             </div>
             <div class="form-container">
                 <form class='form' method="POST" action="/find-twin">
