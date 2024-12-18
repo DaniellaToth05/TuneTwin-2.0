@@ -8,28 +8,40 @@
     src: url(fonts/helvetica-world-bold.ttf);
 }
 
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 html, body {
     margin: 0;
     padding: 0;
-    min-height: 100%; /* Ensure they cover the full height */
+    min-height: 100%; 
     background: linear-gradient(to bottom right, #616060 20%, #dcd9d9 80%);
-    background-repeat: no-repeat; /* Prevent background from repeating */
-    background-attachment: fixed; /* Ensure the background stays fixed during scrolling */
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    transition: 0.3s ease;
 }
-
-
 
 p {
     font-family: 'Horizon';
     font-size: 3.5vw;
     text-align: center;
     color: #ffffff;
+    animation: fadeInSlideUp 0.6s ease-out;
 }
 
 
 .header{
     display: flex;
     flex-direction: column;
+    animation: fadeInSlideUp 0.6s ease-out;
 }
 
 
@@ -89,6 +101,7 @@ p {
 .header2 {
     width: 100%;
     padding: 1vw 2vw;
+    animation: fadeInSlideUp 0.6s ease-out;
 }
 
 .stripe2 {
@@ -157,6 +170,7 @@ a:focus, a:active{
 
 .form-container{
     width: 58vw;
+    animation: fadeInSlideUp 0.6s ease-out;
 }
 
 .text-by p{
@@ -251,6 +265,7 @@ input:focus::placeholder{
     margin-top: 0.5vw;
     margin-left: 11vw;
     transition: 0.1s ease;
+    animation: fadeInSlideUp 0.6s ease-out;
 }
 
 button:hover {
@@ -267,7 +282,8 @@ button:hover {
     width: 20vw;              
     height: 30vw;              
     margin: 2vw auto; 
-    margin-left: 2.2vw;         
+    margin-left: 2.2vw;  
+    animation: fadeInSlideUp 0.6s ease-out;     
 }
 
 /* vinyl record styling */
@@ -308,6 +324,7 @@ button:hover {
     border-color: #ffffff;
     width: 10vw; 
     height: 10vw; 
+    
 }
 
 

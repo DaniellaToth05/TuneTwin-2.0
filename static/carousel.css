@@ -187,6 +187,19 @@
 .song-display {
     text-align: center;
     margin-top: -1.5vw;
+    background-color: rgba(91, 91, 91, 0.212);
+    padding: 2vw;
+    border-radius: 2vw;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.225);
+    width: 47vw;
+    height: 37vw;
+    margin: 4vw auto;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;   
+    justify-content: center;
+    gap: 1.5vw;           
+    animation: fadeInSlideUp 0.6s ease-out;
 }
 
 .tune-phrase-top{
@@ -221,6 +234,7 @@
     border-style: solid;
     box-shadow: 0 0 20px #fff;
     border-color: #ffffffa2;
+    animation: fadeInSlideUp 0.6s ease-out;
 }
 
 .song-title {
@@ -240,21 +254,3 @@
     margin-top: -1vw;
     text-shadow: 0 0 5px #fff;
 }
-
-.song-display {
-    background-color: rgba(91, 91, 91, 0.212);
-    padding: 2vw;
-    border-radius: 2vw;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.225);
-    width: 47vw;
-    height: 37vw;
-    margin: 4vw auto;
-    
-    display: flex;
-    flex-direction: column; 
-    align-items: center;   
-    justify-content: center;
-    gap: 1.5vw;           
-}
-
-
