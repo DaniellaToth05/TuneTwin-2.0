@@ -4,7 +4,7 @@
 # Flask is a framework for building web apps, i.e. a toolbox for building websites
 from flask import Flask, flash, redirect, render_template, request, url_for
 from dotenv import load_dotenv
-import spotify
+import lastfm
 import os
 
 # creates an instance of the class flask, calls it app
@@ -19,29 +19,34 @@ def home_page():
 
 @app.route('/find-twin', methods=['POST'])
 def find_twin():
+
+    # get user inputted song and artist
     song = request.form.get('song')
     artist = request.form.get('artist')
 
-    token = spotify.get_token()
-    search_results = spotify.search_for_song(token, song, artist)
-
-    tracks = []
-    song_cover_url = ""
-    song_name = song
-    song_artist = artist
-
-    if search_results:
-        track_id = search_results.get("id")
-        song_cover_url = search_results.get("album", {}).get("images", [{}])[0].get("url", "")
-        song_name = search_results.get("name", song_name)  # Use the song name from search results if available
-        song_artist = search_results.get("artists", [{}])[0].get("name", song_artist)  # Use the artist name from search results if available
-        recommendations = spotify.get_recs(token, seed_tracks=track_id)
-
-        if recommendations:
-            tracks = recommendations.get('tracks', [])  # This should now only contain 10 tracks
+    result = lastfm.find_song(song, artist)
 
 
-    return render_template('find-twin.html', tracks=tracks, song_cover_url=song_cover_url, song_name=song_name, song_artist=song_artist)
+    # token = spotify.get_token()
+    # search_results = spotify.search_for_song(token, song, artist)
+
+    # tracks = []
+    # song_cover_url = ""
+    # song_name = song
+    # song_artist = artist
+
+    # if search_results:
+    #     track_id = search_results.get("id")
+    #     song_cover_url = search_results.get("album", {}).get("images", [{}])[0].get("url", "")
+    #     song_name = search_results.get("name", song_name)  # Use the song name from search results if available
+    #     song_artist = search_results.get("artists", [{}])[0].get("name", song_artist)  # Use the artist name from search results if available
+    #     recommendations = spotify.get_recs(token, seed_tracks=track_id)
+
+    #     if recommendations:
+    #         tracks = recommendations.get('tracks', [])  # This should now only contain 10 tracks
+
+
+    # return render_template('find-twin.html', tracks=tracks, song_cover_url=song_cover_url, song_name=song_name, song_artist=song_artist)
 
 
 
