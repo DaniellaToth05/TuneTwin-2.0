@@ -26,6 +26,28 @@ def find_twin():
 
     result = lastfm.find_song(song, artist)
 
+    tracks = []
+    song_cover_url = ""
+    song_name = song
+    song_artist = artist
+
+    if result:
+        top_result = result[0]
+        top_name = top_result.get("name", song_name)
+        top_artist = top_result.get("artist", song_artist)
+        top_cover = top_result.get("image", [{}])[-1].get("#text", "")  # largest image url at -1 (others are for thumbnails)   
+
+        twins = lastfm.find_match(top_name, top_artist) 
+        tracks = twins[:10]
+
+    return render_template(
+        'find-twin.html',
+        tracks=tracks,
+        song_cover_url=top_cover,
+        song_name=song,
+        song_artist=artist
+    )
+
 
     # token = spotify.get_token()
     # search_results = spotify.search_for_song(token, song, artist)
@@ -60,7 +82,81 @@ def find_twin():
 #     return redirect(url_for("user", word="Secret"))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5001)
 
 # get method: not secure data, typically typed in thru url or link
 # post method: secure data, typically form data that won't be seen on either end or stored by the webserver unless we send it to a database
+
+
+
+# from flask import Flask, request, render_template, jsonify
+# import requests
+
+# app = Flask(__name__)
+
+# LASTFM_API_KEY = "9d6466a9f6409f63680eb9c885419ba3"
+# LASTFM_BASE_URL = "https://ws.audioscrobbler.com/2.0/"
+
+# def search_track(song, artist):
+#     """Search for a song and artist on Last.fm."""
+#     params = {
+#         "method": "track.search",
+#         "track": song,
+#         "artist": artist,
+#         "api_key": LASTFM_API_KEY,
+#         "format": "json",
+#     }
+#     response = requests.get(LASTFM_BASE_URL, params=params)
+#     if response.status_code == 200:
+#         return response.json().get("results", {}).get("trackmatches", {}).get("track", [])
+#     return []
+
+# def get_similar_tracks(song, artist):
+#     """Get similar tracks from Last.fm."""
+#     params = {
+#         "method": "track.getsimilar",
+#         "track": song,
+#         "artist": artist,
+#         "api_key": LASTFM_API_KEY,
+#         "format": "json",
+#     }
+#     response = requests.get(LASTFM_BASE_URL, params=params)
+#     if response.status_code == 200:
+#         return response.json().get("similartracks", {}).get("track", [])
+#     return []
+
+# @app.route('/find-twin', methods=['POST'])
+# def find_twin():
+#     song = request.form.get('song')
+#     artist = request.form.get('artist')
+
+#     # Search for the song and artist
+#     search_results = search_track(song, artist)
+
+#     # Default values
+#     tracks = []
+#     song_cover_url = ""
+#     song_name = song
+#     song_artist = artist
+
+#     if search_results:
+#         # Use the first search result for more accurate recommendations
+#         first_result = search_results[0]
+#         song_name = first_result.get("name", song_name)
+#         song_artist = first_result.get("artist", song_artist)
+#         song_cover_url = first_result.get("image", [{}])[-1].get("#text", "")  # Get the largest image URL
+
+#         # Get similar tracks
+#         recommendations = get_similar_tracks(song_name, song_artist)
+#         tracks = recommendations[:10]  # Limit to 10 recommendations
+
+#     return render_template(
+#         'find-twin.html',
+#         tracks=tracks,
+#         song_cover_url=song_cover_url,
+#         song_name=song_name,
+#         song_artist=song_artist
+#     )
+
+# if __name__ == '__main__':
+#     app.run(debug=True)
