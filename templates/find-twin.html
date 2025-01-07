@@ -27,9 +27,9 @@ for track in tracks:
         <div class="carousel-inner">
             {% for track in tracks %}
                 <div class="carousel-item">
-                    <!-- <img src="{{ track['image'][-1]['#text'] if track['image'] else '' }}" 
+                    <img src="{{ track['image'][-1]['#text'] if track['image'] else '' }}" 
                          alt="{{ track['name'] }}" 
-                         class="carousel-image"> -->
+                         class="carousel-image">
                     <div class="track-info">
                         <p class="track-name">{{ track['name'] }}</p>  <!-- Added specific class for track name -->
                         <p class="track-artist">by {{ track['artist']['name'] }}</p>  <!-- Added specific class for artist -->

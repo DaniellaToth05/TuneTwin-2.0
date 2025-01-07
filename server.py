@@ -5,6 +5,7 @@
 from flask import Flask, flash, redirect, render_template, request, url_for
 from dotenv import load_dotenv
 import lastfm
+import spotify
 import os
 
 # creates an instance of the class flask, calls it app
@@ -26,6 +27,11 @@ def find_twin():
 
     result = lastfm.find_song(song, artist)
 
+    token = spotify.get_token()
+    search_results = spotify.search_for_song(token, song, artist)
+
+    print("SPOTIFY", search_results)
+
     tracks = []
     song_cover_url = ""
     song_name = song
@@ -33,9 +39,12 @@ def find_twin():
 
     if result:
         top_result = result[0]
-        top_name = top_result.get("name", song_name)
-        top_artist = top_result.get("artist", song_artist)
-        top_cover = top_result.get("image", [{}])[-1].get("#text", "")  # largest image url at -1 (others are for thumbnails)   
+        # top_name = top_result.get("name", song_name)
+        top_name = search_results.get("name", song_name) 
+        # top_artist = top_result.get("artist", song_artist)
+        top_artist = search_results.get("artists", [{}])[0].get("name", song_artist)
+        # top_cover = top_result.get("image", [{}])[-1].get("#text", "")  # largest image url at -1 (others are for thumbnails)   
+        top_cover = song_cover_url = search_results.get("album", {}).get("images", [{}])[0].get("url", "")
 
         twins = lastfm.find_match(top_name, top_artist) 
         tracks = twins[:10]
