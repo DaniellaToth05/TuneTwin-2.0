@@ -38,6 +38,7 @@ def find_match(song, artist):
     response = requests.get(lastfm_url, params=params)
 
     if response.status_code == 200:
+        print(response.json().get("similartracks", {}).get("track", []))
         return response.json().get("similartracks", {}).get("track", [])
 
     return []

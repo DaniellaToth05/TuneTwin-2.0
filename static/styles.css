@@ -399,3 +399,7 @@ button:hover {
     margin-top: 2vw;
     transition: 0.5s ease;
 }
+
+.carousel-image{
+    font-size: 1px;
+}

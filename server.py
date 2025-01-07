@@ -82,7 +82,7 @@ def find_twin():
 #     return redirect(url_for("user", word="Secret"))
 
 if __name__ == '__main__':
-    app.run(port=5001)
+    app.run(debug=True)
 
 # get method: not secure data, typically typed in thru url or link
 # post method: secure data, typically form data that won't be seen on either end or stored by the webserver unless we send it to a database
