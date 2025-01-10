@@ -6,6 +6,7 @@ from flask import Flask, flash, redirect, render_template, request, url_for
 from dotenv import load_dotenv
 import lastfm
 import spotify
+import deezer
 import os
 import time
 
@@ -48,30 +49,12 @@ def find_twin():
         twins = lastfm.find_match(top_name, top_artist) 
         tracks = twins[:10]
 
-        # for track in tracks:
-        #     track_name = track.get("name")
-        #     track_artist = track.get("artist", {}).get("name")
-        #     print(track_name, track_artist)
-        #     spotify_result = spotify.search_for_song(token, track_name, track_artist)
-        #     print(spotify_result)
-
-        #     time.sleep(0.5)  # Pause for 500ms between requests
-        #     # Send request for each track
-        #     # Navigate to the album images
-        #     album = spotify_result.get("album", {})
-        #     images = album.get("images", [])
-
-        #     # Get the first image URL if available
-        #     if images:
-        #         image_url = images[0].get("url", "No image available")
-        #         tracks[i] = {
-        #             **track,  # Copy existing track details
-        #             "cover_art_url": image_url,
-        #         }
-        #         print("Album Image URL:", image_url)
-        #     else:
-        #         print("No images available.")
-
+        for track in tracks:
+            track_name = track.get("name")
+            track_artist = track.get("artist", {}).get("name")
+            deezer_artwork_url = deezer.get_artwork(track_name, track_artist)
+            print(deezer_artwork_url)
+            track["artwork"] = deezer_artwork_url
 
     return render_template(
         'find-twin.html',

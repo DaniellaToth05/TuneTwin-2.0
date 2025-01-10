@@ -27,7 +27,7 @@ for track in tracks:
         <div class="carousel-inner">
             {% for track in tracks %}
                 <div class="carousel-item">
-                    <img src="{{ track['image'][-1]['#text'] if track['image'] else '' }}" 
+                    <img src="{{ track['artwork'] if track['artwork'] else '' }}"
                          alt="{{ track['name'] }}" 
                          class="carousel-image">
                     <div class="track-info">
