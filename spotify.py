@@ -50,27 +50,3 @@ def search_for_song(token, song, artist):
 
     else:
         return{"error": "Unable to fetch data from Spotify"}
-
-def get_recs(token, seed_tracks, seed_artists=None, seed_genres=None, limit=10, market='CA'):
-    url = "https://api.spotify.com/v1/recommendations"
-    headers = get_auth_header(token)
-
-    params = {
-        "seed_tracks": seed_tracks,
-        "limit": limit,  # Limit to 10 recommendations
-        "market": market
-    }
-
-    if seed_artists:
-        params["seed_artists"] = seed_artists
-    if seed_genres:
-        params["seed_genres"] = seed_genres
-
-    response = requests.get(url, headers=headers, params=params)
-
-    if response.status_code == 200:
-        recommendations = response.json()
-        return recommendations
-    else:
-        print(f"Request failed with status code: {response.status_code}")
-        return None
