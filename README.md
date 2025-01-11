@@ -15,7 +15,7 @@
 ## How It Works
 
 1. **Input**: Enter your favorite song.
-2. **API Call**: TuneTwin uses the Spotify API to find similar songs.
+2. **API Call**: TuneTwin uses the LastFM API to find similar songs.
 3. **Results**: Receive personalized song recommendations.
 
 ---
