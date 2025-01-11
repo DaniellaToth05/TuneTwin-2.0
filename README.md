@@ -1,10 +1,10 @@
 # TuneTwin 🎧
 
-**TuneTwin** is a music recommendation tool that uses the Spotify API to help you discover new music. Just enter your favorite song, and TuneTwin will find tracks with a similar vibe. Whether you want to expand your playlists or explore new artists, TuneTwin makes music discovery easy and personalized!
+**TuneTwin** is a music recommendation tool that uses the Spotify API, LastFM API, and Deezer API to help you discover new music. Just enter your favorite song, and TuneTwin will find tracks with a similar vibe. Whether you want to expand your playlists or explore new artists, TuneTwin makes music discovery easy and personalized!
 
 ## Features
 
-- **Song-Based Recommendations**: Enter a favorite song, and TuneTwin finds similar tracks using the Spotify API.
+- **Song-Based Recommendations**: Enter a favorite song, and TuneTwin finds similar tracks using the LastFM API.
 - **Personalized Discovery**: Explore music tailored to your tastes.
 - **Simple and Intuitive Interface**: Easy-to-use interface for seamless music discovery.
 
@@ -23,9 +23,10 @@
 ## Technologies Used
 
 - **Python** (Flask) – For the web server.
-- **Spotify API** – For fetching song recommendations.
+- **LastFM API** – For fetching song recommendations.
+- **Spotify and Deezer APIs** – For fetching album covers.
 - **HTML/CSS** – For the user interface.
-- **Requests** – For making HTTP requests to the Spotify API.
+- **Requests** – For making HTTP requests to the LastFM API.
 - **Dotenv** – For managing environment variables.
 
 ---
