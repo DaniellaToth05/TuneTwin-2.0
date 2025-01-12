@@ -13,6 +13,6 @@ def get_artwork(song, artist):
             album_cover_url = track_info["album"]["cover_big"]
             return album_cover_url
         else: 
-            return None
+            return "static/images/default.jpg"
     else:
         return None

@@ -50,7 +50,6 @@ def find_twin():
             track_name = track.get("name")
             track_artist = track.get("artist", {}).get("name")
             deezer_artwork_url = deezer.get_artwork(track_name, track_artist)
-            print(deezer_artwork_url)
             track["artwork"] = deezer_artwork_url
 
     return render_template(
