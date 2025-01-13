@@ -60,8 +60,12 @@ def find_twin():
         song_artist=artist
     )
 
+# if __name__ == '__main__':
+#     app.run(debug=True)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
+
 
 # get method: not secure data, typically typed in thru url or link
 # post method: secure data, typically form data that won't be seen on either end or stored by the webserver unless we send it to a database
