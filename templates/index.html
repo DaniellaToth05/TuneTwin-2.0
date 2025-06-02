@@ -24,11 +24,12 @@
     <div class="hero-content">
       <h1>tunetwin</h1>
       <p>feel the tune, find your match.</p>
+      <a href="/search" class="hero-button">search your song</a>
     </div>
   </section>
 
   <main class="main-content">
-    <section class="tune-section">
+    <section class="tune-section" id="tuneSection">
       <h2 class="section-title">tonight's song</h2>
       <div class="tune-card">
         <div class="tune-info">
@@ -47,26 +48,19 @@
           </div>
 
           <div class="buttons">
-            {% if song.preview_url %}
-              <button class="play-button" id="play-button">play</button>
-              <audio id="audio-player" src="{{ song.preview_url }}"></audio>
-            {% else %}
-              <button class="play-button" disabled>no preview</button>
-            {% endif %}
-            <form method="POST" action="/refresh" style="display: inline;">
-              <button type="submit" class="refresh-button">refresh song</button>
-            </form>
+            <button class="play-button" data-preview-url="{{ song.preview_url }}">play</button>
+            <button type="button" class="refresh-button" onclick="refreshSong()">refresh song</button>
           </div>
         </div>
 
         <div class="visual-section">
           <div class="album-art">
             <img 
-                src="{{ song.album_cover }}" 
-                alt="Album Cover" 
-                style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" 
-                data-fallback="{{ url_for('static', filename='images/default.png') }}"
-                onerror="this.onerror=null; this.src=this.dataset.fallback;"
+              src="{{ song.album_cover }}" 
+              alt="Album Cover" 
+              style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" 
+              data-fallback="{{ url_for('static', filename='images/default.png') }}"
+              onerror="this.onerror=null; this.src=this.dataset.fallback;"
             />
           </div>
           <div class="mood-board">
@@ -81,6 +75,7 @@
   </main>
 
   <script>
+    // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -97,19 +92,26 @@
       hero.style.transform = `translateY(${scrolled * -0.3}px)`;
     });
 
-    const playBtn = document.getElementById('play-button');
-    const audio = document.getElementById('audio-player');
-
-    if (playBtn && audio) {
+    const playBtn = document.querySelector('.play-button');
+    if (playBtn) {
+      const audio = new Audio(playBtn.dataset.previewUrl);
       playBtn.addEventListener('click', function () {
         if (audio.paused) {
           audio.play();
-          playBtn.textContent = 'pause';
+          this.innerHTML = 'pause';
         } else {
           audio.pause();
-          playBtn.textContent = 'play';
+          this.innerHTML = 'play';
         }
       });
+    }
+
+    function refreshSong() {
+      fetch('/refresh')
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('tuneSection').innerHTML = data.html;
+        });
     }
   </script>
 </body>
