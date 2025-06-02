@@ -1,45 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>TuneTwin</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
-    </head>
-    <body>
-        <div class='header'>
-            <div class="stripe1">
-                <h1 class="title">TuneTwin</h1>
-                <a href="/">
-                    <p class="logo">♫</p>
-                </a>
-            </div>
-            <p class="motto">FEEL THE TUNE, FIND YOUR MATCH.</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TuneTwin - Where Music Meets Memory</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="grain-overlay"></div>
+
+  <nav>
+    <div class="logo">tunetwin</div>
+    <ul class="nav-links">
+      <li><a href="#about">about</a></li>
+      <li><a href="#playlist">playlist</a></li>
+      <li><a href="#submit">submit</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>tunetwin</h1>
+      <p>feel the tune, find your match.</p>
+    </div>
+  </section>
+
+  <main class="main-content">
+    <section class="tune-section">
+      <h2 class="section-title">tonight's song</h2>
+      <div class="tune-card">
+        <div class="tune-info">
+          <h3>{{ song.title }}</h3>
+          <div class="artist">{{ song.artist }}</div>
+          <p>{{ song.description }}</p>
+
+          <div class="lyrics-preview">
+            <p>{{ song.quote | safe }}</p>
+          </div>
+
+          <div class="mood-tags">
+            {% for tag in song.tags %}
+              <span class="tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="buttons">
+            {% if song.preview_url %}
+              <button class="play-button" id="play-button">play</button>
+              <audio id="audio-player" src="{{ song.preview_url }}"></audio>
+            {% else %}
+              <button class="play-button" disabled>no preview</button>
+            {% endif %}
+            <form method="POST" action="/refresh" style="display: inline;">
+              <button type="submit" class="refresh-button">refresh song</button>
+            </form>
+          </div>
         </div>
-        <div class="content">
-            <div class="album-stack">
-                <img src="{{ url_for('static', filename='images/vinyl.png') }}" class="vinyl-record">
-                <div class="album-covers">
-                    <img src="{{ url_for('static', filename='images/album1.jpeg') }}" class="album-cover cover1">
-                    <img src="{{ url_for('static', filename='images/album2.jpeg') }}" class="album-cover cover2">
-                    <img src="{{ url_for('static', filename='images/album3.jpeg') }}" class="album-cover cover3">
-                    <img src="{{ url_for('static', filename='images/album4.jpeg') }}" class="album-cover cover4">
-                    <img src="{{ url_for('static', filename='images/album5.jpeg') }}" class="album-cover cover5">
-                </div>
-            </div>
-            <div class="form-container">
-                <form class='form' method="POST" action="/find-twin">
-                    <div class="input-boxes-wrapper"> 
-                        <div class="input-boxes">
-                            <input type="text" name="song" placeholder="ENTER THE SONG NAME" required />
-                            <div class="text-by">
-                                <p>BY</p>
-                            </div>
-                            <input type="text" name="artist" placeholder="ENTER THE ARTIST NAME" required />
-                        </div>
-                    </div>
-                    <button type="submit">Find your twin</button>
-                </form>
-            </div>
+
+        <div class="visual-section">
+          <div class="album-art">
+            <img 
+                src="{{ song.album_cover }}" 
+                alt="Album Cover" 
+                style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" 
+                data-fallback="{{ url_for('static', filename='images/default.png') }}"
+                onerror="this.onerror=null; this.src=this.dataset.fallback;"
+            />
+          </div>
+          <div class="mood-board">
+            <div class="mood-item"></div>
+            <div class="mood-item"></div>
+            <div class="mood-item"></div>
+            <div class="mood-item"></div>
+          </div>
         </div>
-    </body>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const hero = document.querySelector('.hero-bg');
+      hero.style.transform = `translateY(${scrolled * -0.3}px)`;
+    });
+
+    const playBtn = document.getElementById('play-button');
+    const audio = document.getElementById('audio-player');
+
+    if (playBtn && audio) {
+      playBtn.addEventListener('click', function () {
+        if (audio.paused) {
+          audio.play();
+          playBtn.textContent = 'pause';
+        } else {
+          audio.pause();
+          playBtn.textContent = 'play';
+        }
+      });
+    }
+  </script>
+</body>
 </html>

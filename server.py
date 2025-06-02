@@ -2,69 +2,89 @@
 
 # import flask class so we can use it
 # flask is a framework for building web apps, i.e. a toolbox for building websites
-from flask import Flask, flash, redirect, render_template, request, url_for
-from dotenv import load_dotenv
-import lastfm
-import spotify
-import deezer
-import os
-import time
+# server.py
+from flask import Flask, render_template, request
+import random
+from deezer import get_song_details  # Import the updated function
 
-# creates an instance of the class flask, calls it app
 app = Flask(__name__)
 
-app.secret_key = 'b#K@d+f6Qw!ZpT4x2V9&0mNlXrS$yC3'
+# Song list (same as before)
+SONGS = [
+    {
+        "title": "Nights",
+        "artist": "Frank Ocean",
+        "description": "a two-part odyssey through heartbreak and reinvention. the glow-up anthem for lonely nights.",
+        "quote": "\"every night fucks every day up<br>every day patches the night up\"",
+        "tags": ["moody", "layered", "late night", "transcendent"],
+    },
+    {
+        "title": "Objects in the Mirror",
+        "artist": "Mac Miller",
+        "description": "gentle reflection and soulful honesty — the warmth of late night self-awareness.",
+        "quote": "\"people love you when they on your mind<br>a thought is love’s currency\"",
+        "tags": ["jazzy", "self-aware", "smooth", "melancholy"],
+    },
+    {
+        "title": "Ribs",
+        "artist": "Lorde",
+        "description": "nostalgia wrapped in echo — the terrifying sweetness of growing older too fast.",
+        "quote": "\"it feels so scary getting old\"",
+        "tags": ["nostalgic", "youth", "aching", "echoey"],
+    },
+    {
+        "title": "Roslyn",
+        "artist": "Bon Iver & St. Vincent",
+        "description": "haunting harmonies echoing the ache of isolation and delicate memories.",
+        "quote": "\"up with your head down<br>and your eyes closed\"",
+        "tags": ["ethereal", "soft", "aching", "winter"],
+    },
+    {
+        "title": "Motion Picture Soundtrack",
+        "artist": "Radiohead",
+        "description": "a funeral lullaby for broken hearts and faded futures.",
+        "quote": "\"i will see you in the next life\"",
+        "tags": ["cinematic", "haunting", "slow", "dramatic"],
+    },
+    {
+        "title": "Lost",
+        "artist": "Frank Ocean",
+        "description": "caught between freedom and chaos — a sun-drenched loop of longing.",
+        "quote": "\"double D, big full breasts on my baby\"",
+        "tags": ["groovy", "bittersweet", "playful", "addictive"],
+    },
+    {
+        "title": "Cherry Wine",
+        "artist": "Hozier",
+        "description": "gentle guitar, raw confessions — the softness of complicated love.",
+        "quote": "\"the way she tells me I’m hers and she is mine\"",
+        "tags": ["tender", "raw", "folk", "intimate"],
+    },
+]
 
-@app.route('/')
-# create function that executes when user visits the url
-def home_page():
-    return render_template('index.html')
+def build_song_data(raw_song):
+    """Attach Deezer artwork and preview to a song dictionary."""
+    details = get_song_details(raw_song["title"], raw_song["artist"])
+    return {
+        **raw_song,
+        "album_cover": details["cover"],
+        "preview_url": details["preview"]
+    }
 
-@app.route('/find-twin', methods=['POST'])
-def find_twin():
+@app.route('/', methods=['GET'])
+def home():
+    selected = random.choice(SONGS)
+    song = build_song_data(selected)
+    return render_template('index.html', song=song)
 
-    # get user inputted song and artist
-    song = request.form.get('song')
-    artist = request.form.get('artist')
-
-    result = lastfm.find_song(song, artist)
-
-    token = spotify.get_token()
-    search_results = spotify.search_for_song(token, song, artist)
-
-    tracks = []
-    song_cover_url = ""
-    song_name = song
-    song_artist = artist
-
-    if result:
-        top_result = result[0]
-        top_name = search_results.get("name", song_name) 
-        top_artist = search_results.get("artists", [{}])[0].get("name", song_artist)  
-        top_cover = search_results.get("album", {}).get("images", [{}])[0].get("url", "")
-
-        twins = lastfm.find_match(top_name, top_artist) 
-        tracks = twins[:10]
-
-        for track in tracks:
-            track_name = track.get("name")
-            track_artist = track.get("artist", {}).get("name")
-            deezer_artwork_url = deezer.get_artwork(track_name, track_artist)
-            track["artwork"] = deezer_artwork_url
-
-    return render_template(
-        'find-twin.html',
-        tracks=tracks,
-        song_cover_url=top_cover,
-        song_name=song,
-        song_artist=artist
-    )
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
+@app.route('/refresh', methods=['POST'])
+def refresh():
+    selected = random.choice(SONGS)
+    song = build_song_data(selected)
+    return render_template('index.html', song=song)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
 
 
 # get method: not secure data, typically typed in thru url or link
