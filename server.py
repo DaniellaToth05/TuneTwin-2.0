@@ -3,9 +3,10 @@
 # import flask class so we can use it
 # flask is a framework for building web apps, i.e. a toolbox for building websites
 # server.py
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import random
 from deezer import get_song_details  # Import the updated function
+from lastfm import find_match
 
 app = Flask(__name__)
 
@@ -81,12 +82,44 @@ def home():
 def refresh():
     selected = random.choice(SONGS)
     song = build_song_data(selected)
-    return render_template('index.html', song=song)
+    return render_template('partials/tonight_song.html', song=song)
+
+@app.route('/search', methods=['GET'])
+def search_page():
+    return render_template('search.html')
+
+@app.route('/search-song', methods=['POST'])
+def search_song():
+    data = request.json
+    song = data.get('song')
+    artist = data.get('artist')
+
+    if not song or not artist:
+        return jsonify({'error': 'Song and artist are required.'}), 400
+
+    matches = find_match(song, artist)
+
+    result_data = []
+    for match in matches[:2]:  # Limit to top 2 matches
+        title = match.get('name')
+        artist_name = match.get('artist', {}).get('name')
+        description = "A match based on emotional tone and mood."
+        tags = ['emotional', 'introspective', 'melodic', 'moody']
+        details = get_song_details(title, artist_name)
+        cover = details['cover']
+
+        result_data.append({
+            'title': title,
+            'artist': artist_name,
+            'description': description,
+            'tags': tags,
+            'album_cover': cover
+        })
+
+    return jsonify(result_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
 
-
 # get method: not secure data, typically typed in thru url or link
 # post method: secure data, typically form data that won't be seen on either end or stored by the webserver unless we send it to a database
-
