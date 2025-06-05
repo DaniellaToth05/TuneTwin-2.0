@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TuneTwin - Find Your Musical Twin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='search.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Helvetica+Neue:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="grain-overlay"></div>
+  <div id="particles"></div>
+
+  <nav>
+    <a href="#" class="logo">tunetwin</a>
+    <ul class="nav-links">
+      <li><a href="/">home</a></li>
+      <li><a href="#about">about</a></li>
+      <li><a href="#playlist">playlist</a></li>
+      <li><a href="#submit">submit</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">find your twin</h1>
+      <p class="page-subtitle">got a song on repeat? let’s twin it.</p>
+    </div>
+
+    <div class="search-section">
+      <form class="search-form" id="searchForm">
+        <div class="form-header">
+          <h2 class="form-title">drop a track</h2>
+          <p class="form-description">let’s expand your playlist with something new.</p>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="songName">song name</label>
+          <input type="text" id="songName" class="search-input" placeholder="name a recent favourite" required>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="artistName">artist</label>
+          <input type="text" id="artistName" class="search-input" placeholder="who made the track?" required>
+        </div>
+
+        <div class="submit-section">
+          <button type="submit" class="find-twin-button">find your twin</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="resultsSection" class="wireframe-container" style="display: none;">
+      <div class="results-section">
+        <div class="results-header">
+          <h2 class="results-title">your musical twins</h2>
+          <p class="results-subtitle" id="results-subtitle"></p>
+        </div>
+        <div class="search-info">
+          <div class="search-query" id="search-query"></div>
+          <div class="match-count" id="match-count"></div>
+        </div>
+        <div class="carousel-container">
+          <div class="carousel-viewport">
+            <div class="carousel-track" id="resultsContent">
+              {% for i in range(10) %}
+              <div class="cd-card hidden" data-index="{{ i }}">
+                <div class="cd-artwork"></div>
+                <div class="cd-info">
+                  <h3 class="cd-title">...</h3>
+                  <div class="cd-artist">...</div>
+                  <div class="cd-tags"></div>
+                  <p class="cd-description">...</p>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      setInterval(() => {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 6 + 's';
+        particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        particlesContainer.appendChild(particle);
+        setTimeout(() => particle.remove(), 8000);
+      }, 3000);
+    }
+
+    function updateCarousel() {
+      const cards = document.querySelectorAll('.cd-card:not(.hidden)');
+      cards.forEach((card, index) => {
+        card.classList.remove('center', 'right', 'left', 'far-left', 'far-right');
+        card.classList.add(index === 0 ? 'center' : index === 1 ? 'right' : 'hidden');
+      });
+    }
+
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const songName = document.getElementById('songName').value.trim();
+      const artistName = document.getElementById('artistName').value.trim();
+
+      if (!songName || !artistName) {
+        alert("Please enter both a song and artist name.");
+        return;
+      }
+
+      fetch('/search-song', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ song: songName, artist: artistName })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Fetched results:", data);
+        if (data.error) {
+          alert(data.error);
+          return;
+        }
+
+        const resultsSection = document.getElementById('resultsSection');
+        const subtitle = document.getElementById('results-subtitle');
+        const query = document.getElementById('search-query');
+        const count = document.getElementById('match-count');
+
+        resultsSection.style.display = 'block'; // make container visible
+        resultsSection.querySelector('.results-section').classList.add('show'); // trigger animation
+
+        subtitle.textContent = `based on "${songName}" by ${artistName}`;
+        query.textContent = `searching for: "${songName}" by ${artistName}`;
+        count.textContent = `${data.length} matches found`;
+
+        const cards = document.querySelectorAll('.cd-card');
+
+        // Always hide all cards first
+        cards.forEach(card => {
+        card.classList.add('hidden');
+        });
+
+        // Now fill in up to 10 cards with new results
+        cards.forEach((card, idx) => {
+        if (data[idx]) {
+            const song = data[idx];
+            card.querySelector('.cd-artwork').style.backgroundImage = `url('${song.album_cover}')`;
+            card.querySelector('.cd-title').textContent = song.title;
+            card.querySelector('.cd-artist').textContent = song.artist;
+            card.querySelector('.cd-description').textContent = song.description;
+            card.querySelector('.cd-tags').innerHTML = song.tags.map(tag => `<span class="cd-tag">${tag}</span>`).join('');
+            card.classList.remove('hidden');
+        }
+        });
+
+
+        updateCarousel();
+        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    createParticles();
+  </script>
+</body>
+</html>

@@ -5,12 +5,12 @@
 # server.py
 from flask import Flask, render_template, request, jsonify
 import random
-from deezer import get_song_details  # Import the updated function
+from deezer import get_artwork
 from lastfm import find_match
 
 app = Flask(__name__)
 
-# Song list (same as before)
+# Preloaded songs for homepage /refresh
 SONGS = [
     {
         "title": "Nights",
@@ -63,25 +63,28 @@ SONGS = [
     },
 ]
 
-def build_song_data(raw_song):
-    """Attach Deezer artwork and preview to a song dictionary."""
-    details = get_song_details(raw_song["title"], raw_song["artist"])
+def build_song_data(title, artist, description, tags):
+    """Get artwork and structure data."""
+    cover = get_artwork(title, artist) or "/static/images/default.png"
     return {
-        **raw_song,
-        "album_cover": details["cover"],
-        "preview_url": details["preview"]
+        "title": title,
+        "artist": artist,
+        "description": description,
+        "tags": tags,
+        "album_cover": cover,
+        "preview_url": None  # optional: if you want to later add audio previews
     }
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def home():
     selected = random.choice(SONGS)
-    song = build_song_data(selected)
+    song = build_song_data(selected["title"], selected["artist"], selected["description"], selected["tags"])
     return render_template('index.html', song=song)
 
 @app.route('/refresh', methods=['POST'])
 def refresh():
     selected = random.choice(SONGS)
-    song = build_song_data(selected)
+    song = build_song_data(selected["title"], selected["artist"], selected["description"], selected["tags"])
     return render_template('partials/tonight_song.html', song=song)
 
 @app.route('/search', methods=['GET'])
@@ -98,28 +101,45 @@ def search_song():
         return jsonify({'error': 'Song and artist are required.'}), 400
 
     matches = find_match(song, artist)
-
     result_data = []
-    for match in matches[:2]:  # Limit to top 2 matches
-        title = match.get('name')
-        artist_name = match.get('artist', {}).get('name')
-        description = "A match based on emotional tone and mood."
-        tags = ['emotional', 'introspective', 'melodic', 'moody']
-        details = get_song_details(title, artist_name)
-        cover = details['cover']
 
+    for match in matches:
+        title = match.get("name")
+        artist_info = match.get("artist")
+
+        if not title or not artist_info:
+            continue
+
+        artist_name = artist_info.get("name")
+        if not artist_name:
+            continue
+
+        result_data.append(build_song_data(
+            title,
+            artist_name,
+            "A match based on emotional tone and mood.",
+            ["emotional", "introspective", "melodic", "moody"]
+        ))
+
+        if len(result_data) == 10:
+            break
+
+    # Pad with placeholders if needed
+    while len(result_data) < 10:
         result_data.append({
-            'title': title,
-            'artist': artist_name,
-            'description': description,
-            'tags': tags,
-            'album_cover': cover
+            "title": "Coming Soon",
+            "artist": "–",
+            "description": "More twins are on the way...",
+            "tags": ["placeholder"],
+            "album_cover": "/static/images/default.png",
+            "preview_url": None
         })
 
     return jsonify(result_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 # get method: not secure data, typically typed in thru url or link
 # post method: secure data, typically form data that won't be seen on either end or stored by the webserver unless we send it to a database

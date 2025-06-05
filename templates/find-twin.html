@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+for track in tracks:
+    if 'image' in track and track['image']:
+        largest_image_url = track['image'][-1]['#text']
+        print(f"Track: {track['name']}, Image URL: {largest_image_url}")
+    else:
+        print(f"Track: {track['name']} has no images.")
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='carousel.css') }}">
+<div class="song-display">
+    <p class="tune-phrase-top">Your tune</p>
+    {% if song_name and song_artist and song_cover_url %}
+        <div class="song-info">
+            <img src="{{ song_cover_url }}" alt="{{ song_name }}" class="song-cover">
+            <p class="song-title">{{ song_name }}</p>
+            <p class="song-artist">by {{ song_artist }}</p>
+        </div>
+    {% else %}
+        <p>No song details available.</p>
+    {% endif %}
+    <p class="tune-phrase-bottom" id="twinning-section">Is twinning with...</p>
+</div>
+<div class="carousel">
+    <div class="carousel-container">
+        <div class="carousel-inner">
+            {% for track in tracks %}
+                <div class="carousel-item">
+                    <img src="{{ track['artwork'] if track['artwork'] else '' }}"
+                         alt="{{ track['name'] }}" 
+                         class="carousel-image">
+                    <div class="track-info">
+                        <p class="track-name">{{ track['name'] }}</p>  <!-- Added specific class for track name -->
+                        <p class="track-artist">by {{ track['artist']['name'] }}</p>  <!-- Added specific class for artist -->
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="carousel-controls"></div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='carousel.js') }}"></script>
+{% endblock %}
