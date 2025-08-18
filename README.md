@@ -8,7 +8,7 @@
 - **Personalized Discovery**: Explore music tailored to your tastes.
 - **Simple and Intuitive Interface**: Easy-to-use interface for seamless music discovery.
 
-🔗 **Check it out here**: [https://tunetwin.ca/]([https://tunetwin.ca/](https://tune-twin-2-0.vercel.app/))
+🔗 **Check it out here**: [https://tune-twin-2-0.vercel.app/]([https://tunetwin.ca/](https://tune-twin-2-0.vercel.app/))
 
 ---
 
