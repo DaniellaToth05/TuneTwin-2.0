@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TuneTwin - Find Your Musical Twin</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='search.css') }}">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Helvetica+Neue:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="grain-overlay"></div>
   <div id="particles"></div>
 
   <nav>
-    <a href="#" class="logo">tunetwin</a>
+    <a href="/" class="logo">tunetwin</a>
     <ul class="nav-links">
       <li><a href="/">home</a></li>
       <li><a href="#about">about</a></li>
@@ -27,6 +27,7 @@
       <p class="page-subtitle">got a song on repeat? let’s twin it.</p>
     </div>
 
+    <!-- Search -->
     <div class="search-section">
       <form class="search-form" id="searchForm">
         <div class="form-header">
@@ -50,122 +51,246 @@
       </form>
     </div>
 
-    <div id="resultsSection" class="wireframe-container" style="display: none;">
+    <!-- Results -->
+    <div id="resultsSection" class="wireframe-container" style="display:none;">
       <div class="results-section">
         <div class="results-header">
           <h2 class="results-title">your musical twins</h2>
           <p class="results-subtitle" id="results-subtitle"></p>
         </div>
+
         <div class="search-info">
           <div class="search-query" id="search-query"></div>
           <div class="match-count" id="match-count"></div>
         </div>
+
         <div class="carousel-container">
           <div class="carousel-viewport">
-            <div class="carousel-track" id="resultsContent">
-              {% for i in range(10) %}
-              <div class="cd-card hidden" data-index="{{ i }}">
-                <div class="cd-artwork"></div>
-                <div class="cd-info">
-                  <h3 class="cd-title">...</h3>
-                  <div class="cd-artist">...</div>
-                  <div class="cd-tags"></div>
-                  <p class="cd-description">...</p>
-                </div>
-              </div>
-              {% endfor %}
-            </div>
+            <div class="carousel-track" id="resultsContent"><!-- cards injected here --></div>
+          </div>
+
+          <!-- Nav -->
+          <div class="carousel-nav">
+            <button class="nav-btn" id="btnPrev" aria-label="Previous">‹</button>
+            <div class="carousel-dots" id="carouselDots"></div>
+            <button class="nav-btn" id="btnNext" aria-label="Next">›</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <script>
-    function createParticles() {
-      const particlesContainer = document.getElementById('particles');
-      setInterval(() => {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 6 + 's';
-        particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
-        particlesContainer.appendChild(particle);
-        setTimeout(() => particle.remove(), 8000);
-      }, 3000);
+<script>
+/* ------------------ ambient particles ------------------ */
+function createParticles() {
+  const particlesContainer = document.getElementById('particles');
+  setInterval(() => {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 6 + 's';
+    p.style.animationDuration = (Math.random() * 3 + 4) + 's';
+    particlesContainer.appendChild(p);
+    setTimeout(() => p.remove(), 8000);
+  }, 3000);
+}
+
+/* ----------------- carousel controller ----------------- */
+function createCarousel(trackEl, dotsEl, prevBtn, nextBtn) {
+  let current = 0;
+  const getCards = () => Array.from(trackEl.querySelectorAll('.cd-card'));
+
+  function renderDots(n) {
+    dotsEl.innerHTML = '';
+    for (let i = 0; i < n; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === current ? ' active' : '');
+      dot.onclick = () => goTo(i);
+      dotsEl.appendChild(dot);
     }
+  }
 
-    function updateCarousel() {
-      const cards = document.querySelectorAll('.cd-card:not(.hidden)');
-      cards.forEach((card, index) => {
-        card.classList.remove('center', 'right', 'left', 'far-left', 'far-right');
-        card.classList.add(index === 0 ? 'center' : index === 1 ? 'right' : 'hidden');
-      });
-    }
+  function applyPositions() {
+    const cards = getCards();
+    const n = cards.length;
 
-    document.getElementById('searchForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const songName = document.getElementById('songName').value.trim();
-      const artistName = document.getElementById('artistName').value.trim();
-
-      if (!songName || !artistName) {
-        alert("Please enter both a song and artist name.");
+    cards.forEach((c, i) => {
+      c.classList.remove('center','left','right','far-left','far-right','hidden');
+      if (n === 1) {
+        c.classList.add('center');
         return;
       }
-
-      fetch('/search-song', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ song: songName, artist: artistName })
-      })
-      .then(res => res.json())
-      .then(data => {
-        console.log("Fetched results:", data);
-        if (data.error) {
-          alert(data.error);
-          return;
-        }
-
-        const resultsSection = document.getElementById('resultsSection');
-        const subtitle = document.getElementById('results-subtitle');
-        const query = document.getElementById('search-query');
-        const count = document.getElementById('match-count');
-
-        resultsSection.style.display = 'block'; // make container visible
-        resultsSection.querySelector('.results-section').classList.add('show'); // trigger animation
-
-        subtitle.textContent = `based on "${songName}" by ${artistName}`;
-        query.textContent = `searching for: "${songName}" by ${artistName}`;
-        count.textContent = `${data.length} matches found`;
-
-        const cards = document.querySelectorAll('.cd-card');
-
-        // Always hide all cards first
-        cards.forEach(card => {
-        card.classList.add('hidden');
-        });
-
-        // Now fill in up to 10 cards with new results
-        cards.forEach((card, idx) => {
-        if (data[idx]) {
-            const song = data[idx];
-            card.querySelector('.cd-artwork').style.backgroundImage = `url('${song.album_cover}')`;
-            card.querySelector('.cd-title').textContent = song.title;
-            card.querySelector('.cd-artist').textContent = song.artist;
-            card.querySelector('.cd-description').textContent = song.description;
-            card.querySelector('.cd-tags').innerHTML = song.tags.map(tag => `<span class="cd-tag">${tag}</span>`).join('');
-            card.classList.remove('hidden');
-        }
-        });
-
-
-        updateCarousel();
-        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
+      const rel = (i - current + n) % n;
+      if (rel === 0) c.classList.add('center');
+      else if (rel === 1) c.classList.add('right');
+      else if (rel === 2) c.classList.add('far-right');
+      else if (rel === n - 1) c.classList.add('left');
+      else if (rel === n - 2) c.classList.add('far-left');
+      else c.classList.add('hidden');
     });
+    renderDots(n);
+  }
 
-    createParticles();
-  </script>
+  function next() { const n = getCards().length; if (n>1){ current=(current+1)%n; applyPositions(); } }
+  function prev() { const n = getCards().length; if (n>1){ current=(current-1+n)%n; applyPositions(); } }
+  function goTo(i){ const n=getCards().length; if (i>=0 && i<n){ current=i; applyPositions(); } }
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'ArrowRight') next();
+  });
+
+  return {
+    init(){ applyPositions(); },
+    destroy(){
+      prevBtn.removeEventListener('click', prev);
+      nextBtn.removeEventListener('click', next);
+    }
+  };
+}
+
+/* -------------------- card builder -------------------- */
+function buildCard(song, index) {
+  const card = document.createElement('div');
+  card.className = 'cd-card hidden';
+  card.dataset.index = String(index);
+
+  const art = document.createElement('div');
+  art.className = 'cd-artwork';
+  if (song.album_cover) {
+    art.style.backgroundImage = `url('${song.album_cover}')`;
+    art.style.backgroundSize = 'cover';
+    art.style.backgroundPosition = 'center';
+  }
+
+  const info = document.createElement('div');
+  info.className = 'cd-info';
+
+  const title = document.createElement('h3');
+  title.className = 'cd-title';
+  title.textContent = song.title || 'Untitled';
+
+  const artist = document.createElement('div');
+  artist.className = 'cd-artist';
+  artist.textContent = song.artist || '—';
+
+  const tags = document.createElement('div');
+  tags.className = 'cd-tags';
+  if (Array.isArray(song.tags)) {
+    tags.innerHTML = song.tags.map(t => `<span class="cd-tag">${t}</span>`).join('');
+  }
+
+  const desc = document.createElement('p');
+  desc.className = 'cd-description';
+  desc.textContent = song.description || '';
+
+  info.appendChild(title);
+  info.appendChild(artist);
+  info.appendChild(tags);
+  info.appendChild(desc);
+
+  // simple play button only if preview_url exists
+  if (song.preview_url) {
+    const controls = document.createElement('div');
+    controls.className = 'play-controls';
+    const btn = document.createElement('button');
+    btn.className = 'play-btn';
+    btn.textContent = '▶';
+    const audio = new Audio(song.preview_url);
+    btn.addEventListener('click', () => {
+      if (audio.paused) { audio.play(); btn.textContent = '⏸'; }
+      else { audio.pause(); btn.textContent = '▶'; }
+    });
+    controls.appendChild(btn);
+    info.appendChild(controls);
+  }
+
+  card.appendChild(art);
+  card.appendChild(info);
+  return card;
+}
+
+/* -------------------- search handler -------------------- */
+const formEl = document.getElementById('searchForm');
+const resultsSectionEl = document.getElementById('resultsSection');
+const subtitleEl = document.getElementById('results-subtitle');
+const queryEl = document.getElementById('search-query');
+const countEl = document.getElementById('match-count');
+const trackEl = document.getElementById('resultsContent');
+const dotsEl = document.getElementById('carouselDots');
+const btnPrev = document.getElementById('btnPrev');
+const btnNext = document.getElementById('btnNext');
+
+let carousel = null;
+
+formEl.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const songName = document.getElementById('songName').value.trim();
+  const artistName = document.getElementById('artistName').value.trim();
+  if (!songName || !artistName) return alert('Please enter both a song and artist name.');
+
+  try {
+    const res = await fetch('/search-song', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ song: songName, artist: artistName })
+    });
+    if (!res.ok) { alert('Search failed'); return; }
+
+    const data = await res.json(); // expects an array of objects exactly as server.py returns
+    // Show section + header info
+    resultsSectionEl.style.display = 'block';
+    resultsSectionEl.querySelector('.results-section').classList.add('show');
+    subtitleEl.textContent = `based on "${songName}" by ${artistName}`;
+    queryEl.textContent = `searching for: "${songName}" by ${artistName}`;
+    countEl.textContent = `${data.length} match${data.length === 1 ? '' : 'es'} found`;
+
+    // reset previous
+    if (carousel) { carousel.destroy(); carousel = null; }
+    trackEl.innerHTML = '';
+
+    // build cards (your backend already returns max 10 incl. placeholders)
+    // filter out "Coming Soon" placeholders
+    const realSongs = data.filter(x => (x.title || '').toLowerCase() !== 'coming soon');
+
+    countEl.textContent = `${realSongs.length} match${realSongs.length === 1 ? '' : 'es'} found`;
+
+    // if nothing real came back, show an empty state
+    if (realSongs.length === 0) {
+      trackEl.innerHTML = `
+        <div class="loading-state">
+          <div class="loading-text">no twins found yet</div>
+          <div class="loading-text" style="opacity:.7">try another song/artist or check spelling</div>
+        </div>`;
+      dotsEl.innerHTML = '';
+      btnPrev.disabled = true;
+      btnNext.disabled = true;
+    } else {
+      realSongs.forEach((song, i) => trackEl.appendChild(buildCard(song, i)));
+      carousel = createCarousel(trackEl, dotsEl, btnPrev, btnNext);
+      carousel.init();
+    }
+
+    // init carousel if there are results
+    if (data.length > 0) {
+      carousel = createCarousel(trackEl, dotsEl, btnPrev, btnNext);
+      carousel.init();
+    } else {
+      dotsEl.innerHTML = '';
+      btnPrev.disabled = true; btnNext.disabled = true;
+    }
+
+    resultsSectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (err) {
+    console.error(err);
+    alert('Something went wrong fetching results.');
+  }
+});
+
+createParticles();
+</script>
 </body>
 </html>
